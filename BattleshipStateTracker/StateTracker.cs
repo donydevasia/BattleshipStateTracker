@@ -90,12 +90,24 @@ namespace BattleshipStateTracker
          */
         public string TakeAttack(int rowNum, int colNum)
         {
+            //range validation
+            if (!(rowNum >= 1 && rowNum <= 10) || !(colNum >= 1 && colNum <= 10))
+                return "Row and Column numbers are invalid";
+
             //hit
             if (_state[rowNum - 1, colNum - 1] == 1)
             {
                 _state[rowNum - 1, colNum - 1] = -1;
                 _numberOfUsedSquares--;
                 if(_numberOfUsedSquares == 0)
+                    return "Hit. All ships sunk";
+                else
+                    return "Hit";
+            }
+            //hit already
+            if (_state[rowNum - 1, colNum - 1] == -1)
+            {
+                if (_numberOfUsedSquares == 0)
                     return "Hit. All ships sunk";
                 else
                     return "Hit";

@@ -225,14 +225,34 @@ namespace BattleshipStateTrackerTest
 
         #region Take attack
         [TestMethod]
+        public void TakeAttack_Invalid_Range_Row()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.TakeAttack(11, 1);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
+        public void TakeAttack_Invalid_Range_Column()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.TakeAttack(1, 11);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
+        public void TakeAttack_Invalid_Range()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.TakeAttack(11, 11);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
         public void TakeAttack_Hit()
         {
             IStateTracker stateTracker = new StateTracker();
-            string message = stateTracker.AddShip(3, 3, new Carrier(), Direction.Vertical);
-            message = stateTracker.AddShip(1, 5, new Battleship(), Direction.Horizontal);
-            message = stateTracker.AddShip(1, 2, new Cruiser(), Direction.Vertical);
-            message = stateTracker.AddShip(6, 6, new Submarine(), Direction.Horizontal);
-            message = stateTracker.AddShip(4, 7, new Destroyer(), Direction.Vertical);
+            string message = stateTracker.AddShip(1, 2, new Cruiser(), Direction.Vertical);
             message = stateTracker.TakeAttack(1, 2);
             Assert.AreEqual("Hit", message);
         }
@@ -241,12 +261,7 @@ namespace BattleshipStateTrackerTest
         public void TakeAttack_Miss()
         {
             IStateTracker stateTracker = new StateTracker();
-            string message = stateTracker.AddShip(3, 3, new Carrier(), Direction.Vertical);
-            message = stateTracker.AddShip(1, 5, new Battleship(), Direction.Horizontal);
-            message = stateTracker.AddShip(1, 2, new Cruiser(), Direction.Vertical);
-            message = stateTracker.AddShip(6, 6, new Submarine(), Direction.Horizontal);
-            message = stateTracker.AddShip(4, 7, new Destroyer(), Direction.Vertical);
-            message = stateTracker.TakeAttack(1, 1);
+            string message = stateTracker.TakeAttack(1, 1);
             Assert.AreEqual("Miss", message);
         }
 
@@ -282,7 +297,7 @@ namespace BattleshipStateTrackerTest
 
 
         [TestMethod]
-        public void TakeAttack_All_Ship_Sunk_Bruteforce()
+        public void TakeAttack_All_Ships_Sunk_Bruteforce()
         {
             IStateTracker stateTracker = new StateTracker();
             string message = stateTracker.AddShip(3, 3, new Carrier(), Direction.Vertical);
@@ -306,8 +321,23 @@ namespace BattleshipStateTrackerTest
             }
                         
         }
+
+        [TestMethod]
+        public void TakeAttack_All_Ships_Repeated()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.AddShip(3, 3, new Carrier(), Direction.Vertical);
+            message = stateTracker.AddShip(1, 5, new Battleship(), Direction.Horizontal);
+            message = stateTracker.AddShip(1, 2, new Cruiser(), Direction.Vertical);
+            message = stateTracker.AddShip(6, 6, new Submarine(), Direction.Horizontal);
+            message = stateTracker.AddShip(4, 7, new Destroyer(), Direction.Vertical);
+
+            for (int i = 1; i <= 20; i++)
+            {
+                 message = stateTracker.TakeAttack(3, 3);
+            }
+            Assert.AreEqual("Hit", message);
+        }
         #endregion
-        //invalid range for adding ships
-        //invalid range for taking attack
     }
 }
