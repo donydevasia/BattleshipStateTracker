@@ -35,6 +35,11 @@ namespace BattleshipStateTracker
         public string AddShip(int rowNum, int colNum, Ship ship, Direction direction)
         {
             int endPosition;
+
+            //range validation
+            if (!(rowNum >= 1 && rowNum <= 10) || !(colNum >= 1 && colNum <= 10))
+                return "Row and Column numbers are invalid";
+            
             //mark squares by incrementing column by the number of squares the ship has
             if (direction == Direction.Horizontal)
             {

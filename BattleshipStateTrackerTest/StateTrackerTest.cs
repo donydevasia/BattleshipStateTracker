@@ -9,6 +9,30 @@ namespace BattleshipStateTrackerTest
     {
         #region Add ships to the board
         [TestMethod]
+        public void Add_Ship_Invalid_Range_Row()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.AddShip(11, 5, new Carrier(), Direction.Horizontal);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
+        public void Add_Ship_Invalid_Range_Column()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.AddShip(5, 11, new Carrier(), Direction.Horizontal);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
+        public void Add_Ship_Invalid_Range()
+        {
+            IStateTracker stateTracker = new StateTracker();
+            string message = stateTracker.AddShip(11, 11, new Carrier(), Direction.Horizontal);
+            Assert.AreEqual("Row and Column numbers are invalid", message);
+        }
+
+        [TestMethod]
         public void Carrier_55_Horizontal_Success()
         {
             IStateTracker stateTracker = new StateTracker();
